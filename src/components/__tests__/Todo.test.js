@@ -1,4 +1,5 @@
 import { render, screen, cleanup } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import Todo from '../Todo';
 
 afterEach(() => {
@@ -28,4 +29,14 @@ test('should render not completed todo', () => {
   expect(todoElement).toBeInTheDocument();
   expect(todoElement).toHaveTextContent('Physics');
   expect(todoElement).not.toContainHTML('<strike>');
+});
+
+test('Matches snapshot', () => {
+  const todo = {
+    id: 1,
+    title: 'Maths',
+    completed: true,
+  };
+  const tree = renderer.create(<Todo todo={todo} />).toJSON();
+  expect(tree).toMatchSnapshot();
 });
